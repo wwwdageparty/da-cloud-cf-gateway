@@ -1,0 +1,20 @@
+name = "dage-cf-gateway"
+main = "src/index.js"
+compatibility_date = "2025-11-07"
+
+account_id = "YourCloudflareAccountID"
+workers_dev = true
+
+[[d1_databases]]
+binding = "DB"
+database_name = "d1 database name"
+database_id = "d1 database id"
+
+[vars]
+DA_WRITETOKEN = "Demo111+"
+DAGATEWAYTOKEN = "my-local-test-token"
+REST_API_BEARER_TOKEN = "mock-rest-token"
+ABLY_API_KEY = "mock-ably-key"
+
+[observability]
+enabled = true
