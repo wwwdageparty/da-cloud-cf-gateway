@@ -4,5 +4,4 @@ node_modules
 package.json
 package-lock.json
 jsconfig.json
-localdev
 src/router.js
