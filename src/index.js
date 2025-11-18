@@ -39,7 +39,7 @@ async function handleAbly(route, bodyJson) {
     }
   }
   const channel = route.channelName;
-  const publishEndpoint = `${ABLY_PUBLISH_BASE_URL}/${channel}/messages`;
+  const publishEndpoint = `${ABLY_PUBLISH_BASE_URL}/${encodeURIComponent(channel)}/messages`;
   const ablyName = bodyJson.action || "gateway-event";
 
   const messageBusPayload = JSON.stringify([{ 
@@ -50,7 +50,7 @@ async function handleAbly(route, bodyJson) {
   const publishRequest = new Request(publishEndpoint, {
       method: 'POST',
       headers: {
-          'Authorization': `Basic ${base64Encode(routeToken + ':')}`, 
+          'Authorization': `Basic ${btoa(routeToken)}`, 
           'Content-Type': 'application/json',
       },
       body: messageBusPayload,
