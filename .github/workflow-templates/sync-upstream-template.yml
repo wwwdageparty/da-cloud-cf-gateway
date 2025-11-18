@@ -2,7 +2,7 @@
 # Keeps your added files and folders.
 # 🧩 Save this as .github/workflows/sync.yml
 
-name: da sync upstream da-cloud-log-service-cf
+name: da sync upstream da-cloud-cf-gateway
 
 on:
   schedule:
