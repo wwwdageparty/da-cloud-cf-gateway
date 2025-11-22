@@ -11,8 +11,8 @@ database_name = "d1 database name"
 database_id = "d1 database id"
 
 [vars]
-DA_WRITETOKEN = "Demo111+"
-DAGATEWAYTOKEN = "my-local-test-token"
+DA_WRITE_TOKEN = "Demo111+"
+DA_GATEWAY_TOKEN = "my-local-test-token"
 REST_API_BEARER_TOKEN = "mock-rest-token"
 ABLY_API_KEY = "mock-ably-key"
 

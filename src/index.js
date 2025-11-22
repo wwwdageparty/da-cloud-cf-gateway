@@ -226,4 +226,4 @@ let G_ENV = null;
 const C_RouteTableName = "darouter";
 // --- GLOBAL CONFIGURATION ---
 const ABLY_PUBLISH_BASE_URL = "https://rest.ably.io/channels"; 
-const C_GATEWAY_TOKEN_NAME = "DAGATEWAYTOKEN";
+const C_GATEWAY_TOKEN_NAME = "DA_GATEWAY_TOKEN";
