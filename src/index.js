@@ -137,6 +137,20 @@ async function handleApi(request) {
 
 }
 
+/////////////////////////   Meta Endpoint   /////////////////////////
+function handleMeta(env) {
+  const instance =
+    env.INSTANCEID && env.INSTANCEID.trim() !== ""
+      ? env.INSTANCEID.trim()
+      : G_INSTANCE;
+
+  return jsonResponse({
+    service: C_SERVICE,
+    version: C_VERSION,
+    instance,
+  });
+}
+
 
 export default {
   async fetch(request, env, ctx) {
@@ -150,6 +164,8 @@ export default {
     }
     if (url.pathname === "/api") {
       return await handleApi(request);
+    } else if (url.pathname === "/meta") {
+      return handleMeta(env);
     } else {
       return new Response("Not Found", { status: 404 });
     }
@@ -227,3 +243,6 @@ const C_RouteTableName = "darouter";
 // --- GLOBAL CONFIGURATION ---
 const ABLY_PUBLISH_BASE_URL = "https://rest.ably.io/channels"; 
 const C_GATEWAY_TOKEN_NAME = "DA_GATEWAY_TOKEN";
+const C_SERVICE="da-cloud-cf-gateway";
+const C_VERSION = "0.0.1";
+let G_INSTANCE="default";
