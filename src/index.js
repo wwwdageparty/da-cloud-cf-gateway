@@ -31,13 +31,14 @@ async function handleRest(route, bodyJson) {
 
 
 // --- HANDLER FUNCTION: ABLY Message Bus Publishing ---
-async function handleAbly(route, bodyJson) {
+async function handleAbly(route, bodyJson, requestId) {
   let routeToken = route.token;
-  if (!routeToken || routeToken === "") {
+  if (!routeToken) {
     if (route.authKeyEnvName) {
       routeToken = G_ENV[route.authKeyEnvName];
     }
   }
+
   const channel = route.channelName;
   const publishEndpoint = `${ABLY_PUBLISH_BASE_URL}/${encodeURIComponent(channel)}/messages`;
   const ablyName = bodyJson.action || "gateway-event";
@@ -47,7 +48,7 @@ async function handleAbly(route, bodyJson) {
       data: bodyJson
   }]);
 
-  const publishRequest = new Request(publishEndpoint, {
+  const publishResponse = await fetch(publishEndpoint, {
       method: 'POST',
       headers: {
           'Authorization': `Basic ${btoa(routeToken)}`, 
@@ -55,8 +56,6 @@ async function handleAbly(route, bodyJson) {
       },
       body: messageBusPayload,
   });
-
-  const publishResponse = await fetch(publishRequest);
 
   if (publishResponse.ok) {
       return ack(requestId, {
@@ -67,6 +66,7 @@ async function handleAbly(route, bodyJson) {
       return nack(requestId, "ABLY_FAILED", await publishResponse.text());
   }
 }
+
 
 async function handleApi(request) {
     const auth = request.headers.get("Authorization");
@@ -126,13 +126,13 @@ async function handleApi(request) {
           case 'REST':
               return await handleRest(route, body);
           case 'ABLY':
-              return await handleAbly(route, body);
+              return await handleAbly(route, body, requestId);
           default:
-              return jsonError(`Unsupported service type: ${body.type}`, 501);
+              return nack(requestId, 501, `Unsupported service type: ${body.type}`)
       }
   } catch (e) {
       console.error(`Error processing request for type ${body.type}: ${e.message}`);
-      return jsonError('Gateway processing failed', 500);
+      return nack(requestId, 500, 'Gateway processing failed')
   }
 
 }
