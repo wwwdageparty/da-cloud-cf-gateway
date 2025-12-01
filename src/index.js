@@ -59,12 +59,12 @@ async function handleAbly(route, bodyJson) {
   const publishResponse = await fetch(publishRequest);
 
   if (publishResponse.ok) {
-      return jsonSuccess({ 
-          status: 'Accepted', 
-          message: `Event published successfully to Ably channel: ${channel}`
+      return ack(requestId, {
+        status: "Accepted",
+        channel,
       });
   } else {
-      return jsonError(`Failed to publish event to Ably: ${await publishResponse.text()}`, 502);
+      return nack(requestId, "ABLY_FAILED", await publishResponse.text());
   }
 }
 
