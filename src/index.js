@@ -111,12 +111,13 @@ async function handleApi(request) {
   try {
     if (route.table_name) {
       body.payload.table_name = route.table_name;
-    } else {
-      // ensure payload does not accidentally contain table_name from client side
-      if ("table_name" in body.payload) {
-        delete body.payload.table_name;
-      }
     }
+    // else {    // we shouldnt care about this;
+    //   // ensure payload does not accidentally contain table_name from client side
+    //   if ("table_name" in body.payload) {
+    //     delete body.payload.table_name;
+    //   }
+    // }
   } catch (err) {
     console.warn(`Non-JSON or unparseable body for ${route.targetUrl}, skipping modification.`);
   }
